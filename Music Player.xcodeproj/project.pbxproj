@@ -14,6 +14,7 @@
 		ADD691E82265B00C00330030 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ADD691E62265B00C00330030 /* LaunchScreen.storyboard */; };
 		ADD691F32265B00C00330030 /* Music_PlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD691F22265B00C00330030 /* Music_PlayerTests.swift */; };
 		ADD691FE2265B00D00330030 /* Music_PlayerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD691FD2265B00D00330030 /* Music_PlayerUITests.swift */; };
+		ADD6920E2265B0A200330030 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADD6920D2265B0A200330030 /* AudioToolbox.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,8 @@
 		ADD691F92265B00D00330030 /* Music PlayerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Music PlayerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADD691FD2265B00D00330030 /* Music_PlayerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Music_PlayerUITests.swift; sourceTree = "<group>"; };
 		ADD691FF2265B00D00330030 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ADD6920B2265B0A200330030 /* Music Player.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Music Player.entitlements"; sourceTree = "<group>"; };
+		ADD6920D2265B0A200330030 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ADD6920E2265B0A200330030 /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,6 +85,7 @@
 				ADD691F12265B00C00330030 /* Music PlayerTests */,
 				ADD691FC2265B00D00330030 /* Music PlayerUITests */,
 				ADD691DB2265B00900330030 /* Products */,
+				ADD6920C2265B0A200330030 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -97,6 +102,7 @@
 		ADD691DC2265B00900330030 /* Music Player */ = {
 			isa = PBXGroup;
 			children = (
+				ADD6920B2265B0A200330030 /* Music Player.entitlements */,
 				ADD691DD2265B00B00330030 /* AppDelegate.swift */,
 				ADD691DF2265B00B00330030 /* ViewController.swift */,
 				ADD691E12265B00B00330030 /* Main.storyboard */,
@@ -123,6 +129,14 @@
 				ADD691FF2265B00D00330030 /* Info.plist */,
 			);
 			path = "Music PlayerUITests";
+			sourceTree = "<group>";
+		};
+		ADD6920C2265B0A200330030 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ADD6920D2265B0A200330030 /* AudioToolbox.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -194,6 +208,14 @@
 					ADD691D92265B00900330030 = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.InterAppAudio = {
+								enabled = 1;
+							};
+						};
 					};
 					ADD691ED2265B00C00330030 = {
 						CreatedOnToolsVersion = 9.2;
@@ -426,7 +448,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Music Player/Music Player.entitlements";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = WZU38568CG;
 				INFOPLIST_FILE = "Music Player/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sudhanshujaisani.Music-Player";
@@ -440,7 +464,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Music Player/Music Player.entitlements";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = WZU38568CG;
 				INFOPLIST_FILE = "Music Player/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.sudhanshujaisani.Music-Player";
