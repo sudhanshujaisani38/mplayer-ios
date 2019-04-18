@@ -16,7 +16,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! UITableViewCell
-        cell.textLabel?.text=songs[1]
+        cell.textLabel?.text=songs[indexPath.item]
         return cell
     }
     
@@ -28,7 +28,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     var musicURL:String=""
     var audioPlayer:AVPlayer?
     var playerItem:AVPlayerItem?
-    var songs:[String]=["a","b"]
+    var songs:[String]=[]
     
     
    
@@ -87,30 +87,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             {(status) in
                 
                 print("Permission granted")
-                do{
-                let mediaDirectory=FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-                    print("after music directory")
-                let files = try FileManager.default.contentsOfDirectory(at: mediaDirectory, includingPropertiesForKeys: nil)
-                    print("after files")
-                    print(files.count)
-                    if files !=  nil{
-                    for i in files{
-                        if i.absoluteString.hasSuffix("mp3"){
-                        print(i.lastPathComponent)
-                        self.songs.append(contentsOf: [i.lastPathComponent])
-                            print("Song list:-------\(self.songs.count)")
-                            self.tableView.beginUpdates()
-                        }
-                    }
-                    
-                    
-                    }
-                
-                  
-                }
-                catch{
-                    print(error.localizedDescription)
-                }
+               
                 
         })
     }
@@ -124,7 +101,30 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     //tableView.reloadData()
     }
     
-
+    override func viewWillAppear(_ animated: Bool) {
+        do{
+            let mediaDirectory=FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            print("after music directory")
+            let files = try FileManager.default.contentsOfDirectory(at: mediaDirectory, includingPropertiesForKeys: nil)
+            print("after files")
+            print(files.count)
+            if files !=  nil{
+                for i in files{
+                    if i.absoluteString.hasSuffix("mp3"){
+                        print(i.lastPathComponent)
+                        self.songs.append(contentsOf: [i.lastPathComponent])
+                        print("Song list:-------\(self.songs.count)")
+                        
+                    }
+                }
+                
+                
+            }
+            
+        }
+        catch{
+            print(error.localizedDescription)
+        }    }
 
 }
 
