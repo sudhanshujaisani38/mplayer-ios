@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AD367531226B5345006CE316 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD367530226B5345006CE316 /* UserNotifications.framework */; };
+		AD367533226B5345006CE316 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD367532226B5345006CE316 /* UserNotificationsUI.framework */; };
+		AD36753D226B5345006CE316 /* NotificationExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = AD36752F226B5345006CE316 /* NotificationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		AD367547226B557D006CE316 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD367530226B5345006CE316 /* UserNotifications.framework */; };
+		AD367548226B557D006CE316 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD367532226B5345006CE316 /* UserNotificationsUI.framework */; };
+		AD367552226B557D006CE316 /* NotificationExtension2.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = AD367546226B557D006CE316 /* NotificationExtension2.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		AD367565226B6171006CE316 /* watchMplayer Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = AD367564226B6171006CE316 /* watchMplayer Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		AD367575226B6171006CE316 /* watchMplayer.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = AD367558226B616E006CE316 /* watchMplayer.app */; };
 		ADD691DE2265B00B00330030 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD691DD2265B00B00330030 /* AppDelegate.swift */; };
 		ADD691E02265B00B00330030 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD691DF2265B00B00330030 /* ViewController.swift */; };
 		ADD691E32265B00C00330030 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ADD691E12265B00B00330030 /* Main.storyboard */; };
@@ -18,6 +26,34 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		AD36753B226B5345006CE316 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ADD691D22265B00800330030 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AD36752E226B5345006CE316;
+			remoteInfo = NotificationExtension;
+		};
+		AD367550226B557D006CE316 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ADD691D22265B00800330030 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AD367545226B557D006CE316;
+			remoteInfo = NotificationExtension2;
+		};
+		AD367566226B6171006CE316 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ADD691D22265B00800330030 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AD367563226B6171006CE316;
+			remoteInfo = "watchMplayer Extension";
+		};
+		AD367573226B6171006CE316 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ADD691D22265B00800330030 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AD367557226B616E006CE316;
+			remoteInfo = watchMplayer;
+		};
 		ADD691EF2265B00C00330030 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = ADD691D22265B00800330030 /* Project object */;
@@ -34,7 +70,50 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		AD367541226B5345006CE316 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				AD367552226B557D006CE316 /* NotificationExtension2.appex in Embed App Extensions */,
+				AD36753D226B5345006CE316 /* NotificationExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AD367579226B6171006CE316 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				AD367565226B6171006CE316 /* watchMplayer Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AD36757D226B6171006CE316 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				AD367575226B6171006CE316 /* watchMplayer.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		AD36752F226B5345006CE316 /* NotificationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		AD367530226B5345006CE316 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		AD367532226B5345006CE316 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
+		AD367546226B557D006CE316 /* NotificationExtension2.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationExtension2.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		AD367558226B616E006CE316 /* watchMplayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = watchMplayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AD367564226B6171006CE316 /* watchMplayer Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "watchMplayer Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADD691DA2265B00900330030 /* Music Player.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Music Player.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADD691DD2265B00B00330030 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ADD691DF2265B00B00330030 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -53,6 +132,31 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		AD36752C226B5345006CE316 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AD367533226B5345006CE316 /* UserNotificationsUI.framework in Frameworks */,
+				AD367531226B5345006CE316 /* UserNotifications.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AD367543226B557D006CE316 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AD367548226B557D006CE316 /* UserNotificationsUI.framework in Frameworks */,
+				AD367547226B557D006CE316 /* UserNotifications.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AD367561226B6171006CE316 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		ADD691D72265B00900330030 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -95,6 +199,10 @@
 				ADD691DA2265B00900330030 /* Music Player.app */,
 				ADD691EE2265B00C00330030 /* Music PlayerTests.xctest */,
 				ADD691F92265B00D00330030 /* Music PlayerUITests.xctest */,
+				AD36752F226B5345006CE316 /* NotificationExtension.appex */,
+				AD367546226B557D006CE316 /* NotificationExtension2.appex */,
+				AD367558226B616E006CE316 /* watchMplayer.app */,
+				AD367564226B6171006CE316 /* watchMplayer Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -135,6 +243,8 @@
 			isa = PBXGroup;
 			children = (
 				ADD6920D2265B0A200330030 /* AudioToolbox.framework */,
+				AD367530226B5345006CE316 /* UserNotifications.framework */,
+				AD367532226B5345006CE316 /* UserNotificationsUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -142,6 +252,74 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		AD36752E226B5345006CE316 /* NotificationExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AD36753E226B5345006CE316 /* Build configuration list for PBXNativeTarget "NotificationExtension" */;
+			buildPhases = (
+				AD36752B226B5345006CE316 /* Sources */,
+				AD36752C226B5345006CE316 /* Frameworks */,
+				AD36752D226B5345006CE316 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NotificationExtension;
+			productName = NotificationExtension;
+			productReference = AD36752F226B5345006CE316 /* NotificationExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		AD367545226B557D006CE316 /* NotificationExtension2 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AD367553226B557D006CE316 /* Build configuration list for PBXNativeTarget "NotificationExtension2" */;
+			buildPhases = (
+				AD367542226B557D006CE316 /* Sources */,
+				AD367543226B557D006CE316 /* Frameworks */,
+				AD367544226B557D006CE316 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NotificationExtension2;
+			productName = NotificationExtension2;
+			productReference = AD367546226B557D006CE316 /* NotificationExtension2.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		AD367557226B616E006CE316 /* watchMplayer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AD36757A226B6171006CE316 /* Build configuration list for PBXNativeTarget "watchMplayer" */;
+			buildPhases = (
+				AD367556226B616E006CE316 /* Resources */,
+				AD367579226B6171006CE316 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AD367567226B6171006CE316 /* PBXTargetDependency */,
+			);
+			name = watchMplayer;
+			productName = watchMplayer;
+			productReference = AD367558226B616E006CE316 /* watchMplayer.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		AD367563226B6171006CE316 /* watchMplayer Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AD367576226B6171006CE316 /* Build configuration list for PBXNativeTarget "watchMplayer Extension" */;
+			buildPhases = (
+				AD367560226B6171006CE316 /* Sources */,
+				AD367561226B6171006CE316 /* Frameworks */,
+				AD367562226B6171006CE316 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "watchMplayer Extension";
+			productName = "watchMplayer Extension";
+			productReference = AD367564226B6171006CE316 /* watchMplayer Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
 		ADD691D92265B00900330030 /* Music Player */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = ADD692022265B00D00330030 /* Build configuration list for PBXNativeTarget "Music Player" */;
@@ -149,10 +327,15 @@
 				ADD691D62265B00900330030 /* Sources */,
 				ADD691D72265B00900330030 /* Frameworks */,
 				ADD691D82265B00900330030 /* Resources */,
+				AD367541226B5345006CE316 /* Embed App Extensions */,
+				AD36757D226B6171006CE316 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				AD36753C226B5345006CE316 /* PBXTargetDependency */,
+				AD367551226B557D006CE316 /* PBXTargetDependency */,
+				AD367574226B6171006CE316 /* PBXTargetDependency */,
 			);
 			name = "Music Player";
 			productName = "Music Player";
@@ -205,6 +388,27 @@
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "Sudhanshu Jaisani";
 				TargetAttributes = {
+					AD36752E226B5345006CE316 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+					AD367545226B557D006CE316 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+					AD367557226B616E006CE316 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+					AD367563226B6171006CE316 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes.watchos.extension = {
+								enabled = 1;
+							};
+						};
+					};
 					ADD691D92265B00900330030 = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
@@ -245,11 +449,43 @@
 				ADD691D92265B00900330030 /* Music Player */,
 				ADD691ED2265B00C00330030 /* Music PlayerTests */,
 				ADD691F82265B00D00330030 /* Music PlayerUITests */,
+				AD36752E226B5345006CE316 /* NotificationExtension */,
+				AD367545226B557D006CE316 /* NotificationExtension2 */,
+				AD367557226B616E006CE316 /* watchMplayer */,
+				AD367563226B6171006CE316 /* watchMplayer Extension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		AD36752D226B5345006CE316 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AD367544226B557D006CE316 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AD367556226B616E006CE316 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AD367562226B6171006CE316 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		ADD691D82265B00900330030 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -277,6 +513,27 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		AD36752B226B5345006CE316 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AD367542226B557D006CE316 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AD367560226B6171006CE316 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		ADD691D62265B00900330030 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -305,6 +562,26 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		AD36753C226B5345006CE316 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AD36752E226B5345006CE316 /* NotificationExtension */;
+			targetProxy = AD36753B226B5345006CE316 /* PBXContainerItemProxy */;
+		};
+		AD367551226B557D006CE316 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AD367545226B557D006CE316 /* NotificationExtension2 */;
+			targetProxy = AD367550226B557D006CE316 /* PBXContainerItemProxy */;
+		};
+		AD367567226B6171006CE316 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AD367563226B6171006CE316 /* watchMplayer Extension */;
+			targetProxy = AD367566226B6171006CE316 /* PBXContainerItemProxy */;
+		};
+		AD367574226B6171006CE316 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AD367557226B616E006CE316 /* watchMplayer */;
+			targetProxy = AD367573226B6171006CE316 /* PBXContainerItemProxy */;
+		};
 		ADD691F02265B00C00330030 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = ADD691D92265B00900330030 /* Music Player */;
@@ -337,6 +614,142 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		AD36753F226B5345006CE316 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = WZU38568CG;
+				INFOPLIST_FILE = NotificationExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sudhanshujaisani.Music-Player.NotificationExtension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AD367540226B5345006CE316 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = WZU38568CG;
+				INFOPLIST_FILE = NotificationExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sudhanshujaisani.Music-Player.NotificationExtension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		AD367554226B557D006CE316 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = WZU38568CG;
+				INFOPLIST_FILE = NotificationExtension2/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sudhanshujaisani.Music-Player.NotificationExtension2";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AD367555226B557D006CE316 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = WZU38568CG;
+				INFOPLIST_FILE = NotificationExtension2/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sudhanshujaisani.Music-Player.NotificationExtension2";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		AD367577226B6171006CE316 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = WZU38568CG;
+				INFOPLIST_FILE = "watchMplayer Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sudhanshujaisani.Music-Player.watchkitapp.watchkitextension";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 4.2;
+			};
+			name = Debug;
+		};
+		AD367578226B6171006CE316 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = WZU38568CG;
+				INFOPLIST_FILE = "watchMplayer Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sudhanshujaisani.Music-Player.watchkitapp.watchkitextension";
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 4.2;
+			};
+			name = Release;
+		};
+		AD36757B226B6171006CE316 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = WZU38568CG;
+				IBSC_MODULE = watchMplayer_Extension;
+				INFOPLIST_FILE = watchMplayer/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sudhanshujaisani.Music-Player.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 4.2;
+			};
+			name = Debug;
+		};
+		AD36757C226B6171006CE316 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = WZU38568CG;
+				IBSC_MODULE = watchMplayer_Extension;
+				INFOPLIST_FILE = watchMplayer/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sudhanshujaisani.Music-Player.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 4.2;
+			};
+			name = Release;
+		};
 		ADD692002265B00D00330030 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -545,6 +958,42 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		AD36753E226B5345006CE316 /* Build configuration list for PBXNativeTarget "NotificationExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AD36753F226B5345006CE316 /* Debug */,
+				AD367540226B5345006CE316 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AD367553226B557D006CE316 /* Build configuration list for PBXNativeTarget "NotificationExtension2" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AD367554226B557D006CE316 /* Debug */,
+				AD367555226B557D006CE316 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AD367576226B6171006CE316 /* Build configuration list for PBXNativeTarget "watchMplayer Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AD367577226B6171006CE316 /* Debug */,
+				AD367578226B6171006CE316 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AD36757A226B6171006CE316 /* Build configuration list for PBXNativeTarget "watchMplayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AD36757B226B6171006CE316 /* Debug */,
+				AD36757C226B6171006CE316 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		ADD691D52265B00800330030 /* Build configuration list for PBXProject "Music Player" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
