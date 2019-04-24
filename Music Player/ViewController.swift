@@ -18,6 +18,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var downloadPercentageText: UITextField!
     
     var musicURL:String=""
@@ -25,11 +26,15 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     var playerItem:AVPlayerItem?
     var songs:[String]=[]
     var dataDownloaded:Int=0
-    let audioURL=URL(string:"https://www.downloadnaija.com/dl/uploads/2018/11/Imagine_Dragons__Machine_(downloadnaija.com).mp3")
+    let musicFileURLs:[URL]=[URL(string:"http://tegos.ru/new/mp3_full/Coldplay_feat_Beyonce_-_Hymn_For_The_Weekend.mp3")!,
+                             URL(string:"https://mp3meet.com/siteuploads/files/sfd5/2119/Alan%20Walker%20-%20Darkside%20320kbps(Mp3meet.com).mp3")!,
+                             URL(string:"https://mp3meet.com/siteuploads/files/sfd5/2328/Martin%20Garrix,%20Bonn%20-%20High%20On%20Life%20320kbps(Mp3meet.com).mp3")!]
+    var audioURL:URL?
     let documentDirectoryURL=FileManager.default.urls(for:.documentDirectory , in:.userDomainMask).first!
     let commandCenter=MPRemoteCommandCenter.shared()
-    var avQueuePlayer:AVQueuePlayer?
     var playerItemContext=0
+    var itemIndex=0
+    var items:[AVPlayerItem]=[]
     
     
     
@@ -42,7 +47,70 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if audioPlayer == nil{
+            
+            for musicFile in musicFileURLs{
+                audioURL=musicFile
+                let destinationURL=documentDirectoryURL.appendingPathComponent((audioURL?.lastPathComponent)!)
+                musicURL=destinationURL.absoluteString
+//                print(musicURL)
+                
+                let url=URL(string:musicURL)
+                let asset=AVAsset(url: url!)
+                playerItem=AVPlayerItem(url: url!)
+                items.append(playerItem!)
+                
+                
+            }
+            playerItem=items[0]
+        }
+        playerItem?.addObserver(
+            self,
+            forKeyPath: #keyPath(AVPlayer.status),
+            options: [.old, .new],
+            context: &playerItemContext
+        )
+        if audioPlayer == nil{
+            
+            audioPlayer = AVPlayer(playerItem: playerItem)
+        }
+        var selectedItem=tableView.cellForRow(at: indexPath)?.textLabel?.text
+       print( "Playing \(selectedItem)")
+        audioPlayer?.pause()
+        audioPlayer?.seek(to: CMTime.init(seconds: 0.0, preferredTimescale: 1))
+        playButton.setTitle("Pause", for: UIControlState.normal)
+        
+        for item in items{
+            var tempAsset = item.asset as? AVURLAsset
+            if tempAsset?.url.lastPathComponent == selectedItem{
+                itemIndex=items.index(of: item)!
+                break
+            }
+        }
+        audioPlayer?.replaceCurrentItem(with: items[itemIndex])
+        audioPlayer?.play()
+        
+        audioPlayer?.addPeriodicTimeObserver(forInterval: CMTime.init(seconds: 1, preferredTimescale: 1), queue: DispatchQueue.main, using: {time in
+            let duration=self.audioPlayer?.currentItem?.duration
+            let currentTime=self.audioPlayer?.currentItem?.currentTime()
+            self.slider.value=Float(CMTimeGetSeconds(currentTime!))/Float(CMTimeGetSeconds((self.audioPlayer?.currentItem?.duration)!))
+            print("\(Float(CMTimeGetSeconds(currentTime!)))    \(Float(CMTimeGetSeconds(duration!)))")
+            
+        })
+        putSongsOnRepeat()
+        updateAudioURL()
+        self.updateControlCenter(
+            title: (self.audioURL?.lastPathComponent)!
+            ,duration: (self.audioPlayer?.currentItem?.duration.seconds)!
+            ,playBackRate:1.0
+            ,timeElapsed:0.0
+        )
+    }
+    
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+        
         print("download finished")
         DispatchQueue.main.async {
             self.downloadPercentageText.text="100%"
@@ -55,15 +123,16 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             try FileManager.default.moveItem(at: location, to:destinationURL)
             print("File moved to document folder")
             DispatchQueue.main.async {
-                self.tableView.reloadData()
+                self.tableView.beginUpdates()
+                print("begin called")
+                
             }
-            //self.tableView.reloadData()
+          
         }
         catch let error as NSError{
             print("not working")
             print(error.localizedDescription)
         }
-
     }
     
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
@@ -80,68 +149,53 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     }
    
     @IBAction func sliderDragged(_ sender: UISlider) {
-        
-        
+        var playBackRate=0.0
+        if playButton.title(for: UIControlState.normal)=="Pause"{
+            playBackRate=1.0
+        }
         let songProgress=self.slider.value;
         audioPlayer?.seek(to: CMTime.init(seconds: Double(Float(CMTimeGetSeconds((audioPlayer?.currentItem?.duration)!))*songProgress), preferredTimescale: 1))
         self.updateControlCenter(
             title: (self.audioURL?.lastPathComponent)!
             ,duration: (self.audioPlayer?.currentItem?.duration.seconds)!
-            ,playBackRate: 0.0
+            ,playBackRate:playBackRate
             ,timeElapsed: Double(Float(CMTimeGetSeconds((audioPlayer?.currentItem?.duration)!))*songProgress)
         )
     }
     
     
     @IBAction func playButtonClicked(_ sender: UIButton) {
-        if sender.titleLabel?.text == "Play"{
-    print("playing ..........")
-        let destinationURL=documentDirectoryURL.appendingPathComponent((audioURL?.lastPathComponent)!)
-        musicURL=destinationURL.absoluteString
-        print(musicURL)
-    
-        let url=URL(string:musicURL)
-        let asset=AVAsset(url: url!)
-        playerItem=AVPlayerItem(asset: asset)
-        playerItem?.addObserver(
-            self,
-            forKeyPath: #keyPath(AVPlayer.status),
-            options: [.old, .new],
-            context: &playerItemContext
-        )
-        
-   
-        print(Float(CMTimeGetSeconds(asset.duration)))
-        audioPlayer = AVPlayer(playerItem: playerItem)
-       
-        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime , object: self.audioPlayer?.currentItem, queue: .main, using: {_ in
-            print("Music Finished .... Restarting in 10 seconds..")
-            sleep(10)
-            self.audioPlayer?.seek(to: CMTime.init(seconds: 0, preferredTimescale: 1))
-            self.audioPlayer?.play()
+        if sender.title(for: UIControlState.normal)=="Play"{
             
-        })
-        sleep(2)
-           
+        print("playing ..........")
+            if audioPlayer==nil{
+                print("please select a track to play from playlist")
+            }
+            else{
+        
         audioPlayer?.play()
+          updateAudioURL()
             self.updateControlCenter(
                 title: (self.audioURL?.lastPathComponent)!
                 ,duration: (self.audioPlayer?.currentItem?.duration.seconds)!
                 ,playBackRate: 1.0
-                ,timeElapsed: 0.0)
-        sender.titleLabel?.text="Pause"
-        audioPlayer?.addPeriodicTimeObserver(forInterval: CMTime.init(seconds: 1, preferredTimescale: 1), queue: DispatchQueue.main, using: {time in
-           let duration=self.playerItem?.duration
-            let currentTime=self.playerItem?.currentTime()
+                ,timeElapsed: (self.audioPlayer?.currentItem?.currentTime().seconds)!)
             
-            self.slider.value=Float(CMTimeGetSeconds(currentTime!))/Float(CMTimeGetSeconds((self.playerItem?.duration)!))
-            print("\(Float(CMTimeGetSeconds(currentTime!)))    \(Float(CMTimeGetSeconds(duration!)))")
+      sender.setTitle("Pause", for: UIControlState.normal)
             
-        })
+       
+            }
         }
         else{
+            print("Pause clicked........")
             audioPlayer?.pause()
-            sender.titleLabel?.text="Play"
+            self.updateControlCenter(
+                title: (self.audioURL?.lastPathComponent)!
+                ,duration: (self.audioPlayer?.currentItem?.duration.seconds)!
+                ,playBackRate: 0.0
+                ,timeElapsed:  (self.audioPlayer?.currentItem?.currentTime().seconds)!)
+           // playerItem?.removeObserver(self, forKeyPath: #keyPath(AVPlayer.status))
+            sender.setTitle("Play", for: UIControlState.normal)
         }
     }
     
@@ -180,13 +234,18 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     @IBAction func stopButtonClicked(_ sender: UIButton) {
         print("Stopped clicked........")
+        if playButton.title(for: UIControlState.normal)=="Pause"{
         audioPlayer?.pause()
+        //playerItem?.removeObserver(self, forKeyPath: #keyPath(AVPlayer.status))
+        playButton.setTitle("Play", for: UIControlState.normal)
+        }
+       
+        audioPlayer?.seek(to: CMTime(seconds: 0.0, preferredTimescale: 1))
         self.updateControlCenter(
             title: (self.audioURL?.lastPathComponent)!
             ,duration: (self.audioPlayer?.currentItem?.duration.seconds)!
             ,playBackRate: 0.0
             ,timeElapsed:  (self.audioPlayer?.currentItem?.currentTime().seconds)!)
-        
         
     }
     
@@ -196,6 +255,8 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     @IBAction func downloadButtonClicked(_ sender: Any) {
         print("Download clicked.......")
+        for musicURL in self.musicFileURLs{
+            self.audioURL=musicURL
         let destinationURL=documentDirectoryURL.appendingPathComponent((audioURL?.lastPathComponent)!)
             if FileManager.default.fileExists(atPath: destinationURL.path){
                 print("File Already Exists")
@@ -204,57 +265,57 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
                 print("Downloading...")
                 let config = URLSessionConfiguration.background(withIdentifier: "mySession")
                 let session=URLSession.init(configuration: config, delegate: self, delegateQueue: OperationQueue())
-//                session.downloadTask(with: audioURL, completionHandler: {(location,response,error)->Void in
-//                    guard let location=location,error==nil else{return}
-//                    do{
-//                        print(location);
-//                        try FileManager.default.moveItem(at: location, to:destinationURL)
-//                        print("File moved to document folder")
-//
-//
-//                        DispatchQueue.main.async {
-//                            self.tableView.reloadData()
-//                                                    }
-//                        //self.tableView.reloadData()
-//                    }
-//                    catch let error as NSError{
-//                        print("not working")
-//                        print(error.localizedDescription)
-//                    }
-//                    }
-//                ).resume()
                 session.downloadTask(with: audioURL!).resume()
-                if #available(iOS 10.0, *) {
-                    UNUserNotificationCenter.current().requestAuthorization(options: [.alert , .sound , .badge], completionHandler: {
-                        (granted,error) in
-                        print("can run in this device")
-                        print ("2nd statement")
-                        
-                        let notificationContent=UNMutableNotificationContent()
-                        notificationContent.title="Downloading your song"
-                        notificationContent.body=self.musicURL
-                        notificationContent.subtitle="\(self.dataDownloaded)"
-                        notificationContent.userInfo=["dataDownloaded":self.dataDownloaded]
-                        
-                        
-                        let trigger=UNTimeIntervalNotificationTrigger.init(timeInterval: 60, repeats: true)
-                        
-                        let notificationRequest=UNNotificationRequest.init(identifier: "myNotification", content: notificationContent, trigger: trigger)
-                        
-                        UNUserNotificationCenter.current().add(notificationRequest, withCompletionHandler: { (error) in
-                            print(error)
-                        })
-                    })
-
-                
-                } else {
-                    print("Cannot run in this device..")
-                    // Fallback on earlier versions
-                }
-                
-            
+                sleep(30)
+           
+               }
         }
     }
+    
+    @IBAction func nextButton(_ sender: Any) {
+        if itemIndex<(items.count-1) {
+        print("next Button Clicked")
+        itemIndex+=1
+        audioPlayer?.pause()
+            audioPlayer?.seek(to: CMTime(seconds: 0.00, preferredTimescale: 1))
+        audioPlayer?.replaceCurrentItem(with: items[itemIndex])
+        updateAudioURL()
+        audioPlayer?.play()
+        
+        self.updateControlCenter(
+            title: (self.audioURL?.lastPathComponent)!
+            ,duration: (self.audioPlayer?.currentItem?.duration.seconds)!
+            ,playBackRate: 1.0
+            ,timeElapsed: (self.audioPlayer?.currentItem?.currentTime().seconds)!)
+        }
+        else{
+            print("Reached end of playlist...")
+        }
+        
+    }
+    
+    
+    @IBAction func prevButtonClicked(_ sender: Any) {
+        if itemIndex>0{
+        print("prev Button Clicked")
+        itemIndex-=1
+        audioPlayer?.pause()
+            audioPlayer?.seek(to: CMTime(seconds: 0.00, preferredTimescale: 1))
+        audioPlayer?.replaceCurrentItem(with: items[itemIndex])
+        updateAudioURL()
+        audioPlayer?.play()
+        
+        self.updateControlCenter(
+            title: (self.audioURL?.lastPathComponent)!
+            ,duration: (self.audioPlayer?.currentItem?.duration.seconds)!
+            ,playBackRate: 1.0
+            ,timeElapsed: (self.audioPlayer?.currentItem?.currentTime().seconds)!)
+        }
+        else{
+            print("begining of the playList")
+        }
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -269,11 +330,11 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
                 let audioSession=AVAudioSession.sharedInstance()
                 do{
                     try audioSession.setCategory(AVAudioSessionCategoryPlayback)
-                    
                 }
-                catch{}
+                catch{
+                    print("error in didLoad")
+                }
         })
-       
     }
 
     override func didReceiveMemoryWarning() {
@@ -283,7 +344,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-  
+  self.slider.setValue(0.0, animated: false)
         UIApplication.shared.beginReceivingRemoteControlEvents()
         commandCenter.playCommand.addTarget(handler: {
             event in
@@ -294,7 +355,9 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
                 ,duration: (self.audioPlayer?.currentItem?.duration.seconds)!
                 ,playBackRate: 1.0
                 ,timeElapsed: (self.audioPlayer?.currentItem?.currentTime().seconds)!)
+            self.playButton.setTitle("Pause", for: UIControlState.normal)
             return MPRemoteCommandHandlerStatus.success
+            
         })
         
         commandCenter.pauseCommand.addTarget(handler: {
@@ -307,6 +370,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             ,duration: (self.audioPlayer?.currentItem?.duration.seconds)!
             ,playBackRate: 0.0
             ,timeElapsed: (self.audioPlayer?.currentItem?.currentTime().seconds)!)
+            self.playButton.setTitle("Play", for: UIControlState.normal)
             return  MPRemoteCommandHandlerStatus.success
         })
         
@@ -315,6 +379,90 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             print("progress bar seeked back")
             return MPRemoteCommandHandlerStatus.success
         })
+        commandCenter.stopCommand.addTarget(handler: {
+            event in
+            self.audioPlayer?.pause()
+            self.audioPlayer?.seek(to: CMTime.init(seconds: 0.0, preferredTimescale: 1))
+            self.playButton.setTitle("Play", for: UIControlState.normal)
+            self.updateControlCenter(
+                title: (self.audioURL?.lastPathComponent)!
+                ,duration: (self.audioPlayer?.currentItem?.duration.seconds)!
+                ,playBackRate: 0.0
+                ,timeElapsed: 0.0)
+            return MPRemoteCommandHandlerStatus.success
+        })
+        commandCenter.nextTrackCommand.addTarget(handler: {
+            event in
+            
+            if self.itemIndex<(self.items.count-1) {
+                print("next Button Clicked from remote")
+                self.itemIndex+=1
+                self.audioPlayer?.pause()
+                self.audioPlayer?.seek(to: CMTime(seconds: 0.00, preferredTimescale: 1))
+                self.audioPlayer?.replaceCurrentItem(with: self.items[self.itemIndex])
+                self.updateAudioURL()
+                self.audioPlayer?.play()
+                
+                self.updateControlCenter(
+                    title: (self.audioURL?.lastPathComponent)!
+                    ,duration: (self.audioPlayer?.currentItem?.duration.seconds)!
+                    ,playBackRate: 1.0
+                    ,timeElapsed: 0.0)
+            }
+            else{
+                print("Reached end of playlist...")
+            }
+
+            return MPRemoteCommandHandlerStatus.success
+        })
+        commandCenter.previousTrackCommand.addTarget(handler: {
+            event in
+            if self.itemIndex>0 {
+                print("prev Button Clicked from remote")
+                self.itemIndex-=1
+                self.audioPlayer?.pause()
+                self.audioPlayer?.seek(to: CMTime(seconds: 0.00, preferredTimescale: 1))
+                self.audioPlayer?.replaceCurrentItem(with: self.items[self.itemIndex])
+                self.updateAudioURL()
+                self.audioPlayer?.play()
+                
+                self.updateControlCenter(
+                    title: (self.audioURL?.lastPathComponent)!
+                    ,duration: (self.audioPlayer?.currentItem?.duration.seconds)!
+                    ,playBackRate: 1.0
+                    ,timeElapsed:0.0)
+            }
+            else{
+                print("Reached begining of playlist...")
+            }
+
+            return MPRemoteCommandHandlerStatus.success
+        })
+        
+        commandCenter.changePlaybackPositionCommand.addTarget(handler: {
+            event in
+            print("seeked from remote")
+            var event2=event as? MPChangePlaybackPositionCommandEvent
+            
+            let duration=self.audioPlayer?.currentItem?.duration
+            let currentTime=event2?.positionTime
+            self.slider.value=Float(currentTime!)/Float(CMTimeGetSeconds((self.audioPlayer?.currentItem?.duration)!))
+         
+            var playBackRate=0.0
+            if self.playButton.title(for: UIControlState.normal)=="Pause"{
+                playBackRate=1.0
+            }
+            let songProgress=self.slider.value;
+            self.self.audioPlayer?.seek(to: CMTime.init(seconds: Double(Float(CMTimeGetSeconds((self.audioPlayer?.currentItem?.duration)!))*songProgress), preferredTimescale: 1))
+            self.updateControlCenter(
+                title: (self.audioURL?.lastPathComponent)!
+                ,duration: (self.audioPlayer?.currentItem?.duration.seconds)!
+                ,playBackRate:playBackRate
+                ,timeElapsed: Double(Float(CMTimeGetSeconds((self.audioPlayer?.currentItem?.duration)!))*songProgress)
+            )
+            return MPRemoteCommandHandlerStatus.success
+        })
+       
     
     }
     
@@ -334,21 +482,51 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
                         playlistItems+=[AVPlayerItem.init(url: i)]
                     }
                 }
-                avQueuePlayer=AVQueuePlayer.init(items: playlistItems)
+                
             }
-            
-            
         }
         catch{
+            print("error in view will appear")
             print(error.localizedDescription)
-        }    }
+        }
+    }
 
     func updateControlCenter(title:String,duration:Double,playBackRate:Double,timeElapsed:Double){
         MPNowPlayingInfoCenter.default().nowPlayingInfo=[
             MPMediaItemPropertyTitle:title,
             MPMediaItemPropertyPlaybackDuration:duration,
-            MPNowPlayingInfoPropertyPlaybackRate:playBackRate,   MPNowPlayingInfoPropertyElapsedPlaybackTime:timeElapsed
+            MPNowPlayingInfoPropertyPlaybackRate:playBackRate,
+            MPNowPlayingInfoPropertyElapsedPlaybackTime:timeElapsed
         ]
+    }
+    
+    func updateAudioURL(){
+        var assetNameForURl=self.audioPlayer?.currentItem?.asset as? AVURLAsset
+        self.audioURL=assetNameForURl?.url
+    }
+    func putSongsOnRepeat(){
+        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime , object: self.audioPlayer?.currentItem, queue: .main, using: {_ in
+            if self.itemIndex < (self.musicFileURLs.count-1) {
+                self.itemIndex+=1
+                print("Music Finished .... playing next song:\(self.itemIndex) \(self.items.count-1)")
+                self.audioPlayer?.replaceCurrentItem(with: self.items[self.itemIndex])
+                self.audioPlayer?.seek(to: CMTime.init(seconds: 0, preferredTimescale: 1))
+                self.audioPlayer?.play()
+                self.updateAudioURL()
+                
+                self.updateControlCenter(
+                    title: (self.audioURL?.lastPathComponent)!
+                    ,duration: (self.audioPlayer?.currentItem?.duration.seconds)!
+                    ,playBackRate:1.0
+                    ,timeElapsed: 0.0
+                )
+                self.putSongsOnRepeat()
+            }
+            else{
+                print("Reached end of playlist")
+            }
+            
+        })
     }
 }
 
